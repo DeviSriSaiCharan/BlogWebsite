@@ -63,3 +63,16 @@ export async function signIn(req, res){
         res.json({msg : "Somethin went wrong", isLoggedIn : false});
     }
 }
+
+export function authCheck(req, res){
+    const token = req.cookies.token;
+    if(!token) return res.json({msg : "You are not logged in", isLoggedIn : false});
+
+    try{
+        const decoded = jwt.verify(token, JWT_SECRET);
+        res.json({msg : "You are logged in", isLoggedIn : true, user : decoded});
+    }
+    catch(e){
+        res.json({msg : "Invalid token", isLoggedIn : false});
+    }
+}
