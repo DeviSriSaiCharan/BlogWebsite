@@ -10,6 +10,6 @@ authRoute.post('/signUp', signUp);
 
 authRoute.post('/signIn', signIn);
 
-authRoute.post('/authCheck', authCheck);
+authRoute.get('/authCheck', authCheck);
 
 export default authRoute;
