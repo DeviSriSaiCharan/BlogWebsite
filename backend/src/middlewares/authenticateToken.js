@@ -1,16 +1,18 @@
 import jwt from 'jsonwebtoken';
+import  dotenv from 'dotenv';
+
+dotenv.config();
 
 export default function authenticateToken(req, res, next){
 
-    const authHeader = req.body.authorization;
+    const authHeader = req.headers.cookie;
 
-    if(!authHeader) res.json({isValid : false});
-
-    const token = authHeader.split(" ")[1];
+    if(!authHeader) return res.json({isValid : false});
 
     try{
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        req.user = decoded;
+        const token = authHeader.split("=")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded.id;
         next();
     }
     catch(err){
