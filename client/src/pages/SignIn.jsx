@@ -7,7 +7,7 @@ export default function SignIn(){
     const [isSelect, setIsSelect] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPasssword] = useState('');
-
+    const navigate = useNavigate();
 
     return (
         <div className="h-screen w-screen bg-black flex justify-center items-center">
@@ -63,6 +63,7 @@ function SignInButton({email, password}){
 
         if(response.isLoggedIn){
             alert(response.msg)
+            navigate('/explore')
         }
         else{
             alert(response.msg)
