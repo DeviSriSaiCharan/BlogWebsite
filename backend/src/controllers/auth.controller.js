@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import {PrismaClient} from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
 
 const prisma = new PrismaClient();
 
@@ -48,7 +47,7 @@ export async function signIn(req, res){
             if(isValid){
                 token = jwt.sign({id : user.id, }, JWT_SECRET, {expiresIn : '15m'})
                 res
-                .cookie("token", token, {httpOnly : true, maxAge : 1000 * 60 * 15, domain : "localhost", sameSite : "Lax"})
+                .cookie("token", token, {httpOnly : `true`, maxAge : 1000 * 60 * 15, domain : "localhost", sameSite : "Lax"})
                 .json({msg : "Logged in successfully", isLoggedIn : true, user})
             }
             else res.json({msg : "Invalid password", isLoggedIn : false})
