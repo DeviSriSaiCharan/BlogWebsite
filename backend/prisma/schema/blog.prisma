@@ -3,6 +3,7 @@ model Blog{
   title String
   content String
   createdAt DateTime @default(now())
-  authotId String
-  author User @relation(fields: [authotId], references: [id])
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+  imageURL String? 
 }

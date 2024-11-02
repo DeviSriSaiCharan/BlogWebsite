@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { uploader } from "../utils/cloudinary.js";
 
 const prisma = new PrismaClient();
 
@@ -23,15 +24,26 @@ export async function getAllBlogs(req, res){
 };
 
 export async function postBlog(req, res){
-    const {title, content} = req.body;
-    const id = req.user.id;
+    const {title, content, image} = req.body;
+    const id = req.user;
 
     try{
+        const result = await uploader.upload(image,{
+            resource_type : "image",
+            folder : "coverImages",
+            transformation : [
+                {quality : "auto:low"},
+                {fetch_format : "auto"}
+            ]
+        })
+        const imageURL = result.secure_url;
+
         const newBlog = await prisma.blog.create({
             data : {
                 title,
                 content,
                 authorId : id,
+                imageURL
             }
         })
         res.json({msg : "Blog posted", isCreated : true});
