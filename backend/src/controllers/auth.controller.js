@@ -65,6 +65,7 @@ export async function signIn(req, res){
 
 export function authCheck(req, res){
     const token = req.cookies.token;
+    console.log(req.cookies);
     if(!token) return res.json({msg : "You are not logged in", isLoggedIn : false});
 
     try{

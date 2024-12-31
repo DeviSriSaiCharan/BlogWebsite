@@ -5,15 +5,39 @@ const prisma = new PrismaClient();
 
 export async function getAllBlogs(req, res){
 
+    const userId = req.user;
     const page = req.query.page;
+    console.log(page);
     let max = 10;
 
     try{
         const blogs = await prisma.blog.findMany({
             skip : Number(max*(page)),
             take : Number(max),
+            select : {
+                id : true,
+                title : true,
+                content : true,
+                imageURL : true,
+                createdAt : true,
+                authorId : true,
+                author : {
+                    select : {
+                        username : true,
+                        id : true
+                    }
+                },
+                Like : {
+                    where : {
+                        UserId : userId
+                    },
+                    select : {
+                        id : true
+                    }
+                } 
+            }
         })
-
+        
         res.json({blogs, error : false})
     }
     catch(e){
@@ -70,11 +94,11 @@ export async function getBlog(req, res){
     }
 };
 
-export function deleteBlog(req, res){
+export async function deleteBlog(req, res){
     const id = req.query.id;
 
     try{
-        const blog = prisma.blog.delete({
+        const blog = await prisma.blog.delete({
             where : {id}
         });
         res.json(blog);
@@ -84,3 +108,45 @@ export function deleteBlog(req, res){
         res.json(e);
     }
 };
+
+export async function createLike(req, res){
+    const userId = req.user;
+    const blogId = req.body.blogId;
+
+    try{
+        const response = await prisma.like.create({
+            data : {
+                UserId : userId,
+                BlogId : blogId
+            }
+        });
+        console.log(response);
+        if(response) res.json({msg : "Liked", success : true, response});
+    }
+    catch(e){
+        console.log(e);
+        res.json({msg : "Something wen wrong", success : false});
+    }
+}
+
+export async function deleteLike(req, res){
+    const userId = req.user;
+    const blogId = req.query.blogId;
+
+    try{
+        const response = await prisma.like.delete({
+            where : {
+                UserId_BlogId : {
+                    UserId : userId,
+                    BlogId : blogId
+                }
+            }
+        });
+        console.log(response);
+        if(response) res.json({msg : "Disliked", success : true, response});
+    }
+    catch(e){
+        console.log(e);
+        res.json({msg : "Something wen wrong", success : false});
+    }
+}

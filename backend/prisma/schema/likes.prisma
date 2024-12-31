@@ -1,0 +1,10 @@
+
+model Like{
+    id String @id @default(uuid())
+    UserId String
+    user User @relation(fields: [UserId], references: [id])
+    BlogId String
+    blog Blog @relation(fields: [BlogId], references: [id])
+    LikedAt DateTime @default(now())
+    @@unique([UserId, BlogId])
+}

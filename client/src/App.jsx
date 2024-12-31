@@ -1,5 +1,5 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import {SignIn, SignUp, Explore, BlogWrite} from './pages/exports';
+import {SignIn, SignUp, Explore, BlogWrite, Blog} from './pages/exports';
 import './App.css'
 
 const router = createBrowserRouter([
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
   {
     path : '/write',
     element : <BlogWrite/>
+  },
+  {
+    path : '/blog/:id',
+    element : <Blog/>
   }
 ]
 );

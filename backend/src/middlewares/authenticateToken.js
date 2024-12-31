@@ -6,7 +6,6 @@ dotenv.config();
 export default function authenticateToken(req, res, next){
 
     const authHeader = req.headers.cookie;
-
     if(!authHeader) return res.json({isValid : false});
 
     try{

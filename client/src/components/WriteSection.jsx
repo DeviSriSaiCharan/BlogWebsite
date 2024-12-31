@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function WriteSection() {
 
@@ -8,6 +9,7 @@ export default function WriteSection() {
     const [image, setImage] = useState("");
     const titleRef = useRef();
     const contentRef = useRef();
+    const navigate = useNavigate();
 
     function handleImageChange(e){
 
@@ -24,6 +26,29 @@ export default function WriteSection() {
             }
         }
     }
+
+    async function authCheck(){
+        try{
+            const response = await axios.get('http://localhost:3000/api/v1/auth/authCheck',{
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                withCredentials : true,
+            });
+            
+            console.log(response.data.isLoggedIn);
+            if(!response.data.isLoggedIn) navigate('/signIn');
+
+        }
+        catch(err){
+            console.log(err);
+            navigate('/signIn');
+        }
+    }
+
+    useEffect(()=>{
+        authCheck();
+    },[])
 
     async function publishBlog(){
         const title = titleRef.current.textContent;
