@@ -1,6 +1,7 @@
 import useAuth from '@/hooks/useAuth';
-import { Search, SquarePen } from 'lucide-react';
+import { Search, SquarePen, UserPen,  BookMarked, PencilLine, BookHeart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 export default function Navbar(){
 
@@ -34,7 +35,28 @@ export default function Navbar(){
 
             <div className='flex items-center gap-16'>
                 <SquarePen color='#3f3f46' className='cursor-pointer hover:text-white' onClick={() => navigate('/write')}/>
-                <div className="rounded-full h-10 w-10 bg-pink-600"></div>
+                {/* <div onClick={() => navigate('/profile')} className="rounded-full h-10 w-10 bg-pink-600"></div> */}
+                <Popover>
+                    <PopoverTrigger className='rounded-full h-10 w-10 bg-pink-600'></PopoverTrigger>
+                    <PopoverContent className="w-48 flex flex-col gap-4 text-zinc-600">
+                        <div className='cursor-pointer hover:text-black hover:font-medium flex gap-4 items-center' onClick={() => navigate("/profile")}>
+                            <UserPen size={20} strokeWidth={1}/>
+                            <div className="">Profile</div>
+                        </div>
+                        <div onClick={() => navigate('/library')} className='cursor-pointer hover:text-black hover:font-medium flex gap-4 items-center' >
+                            <BookMarked size={19} strokeWidth={1}/>
+                            <div className="">Library</div>
+                        </div>
+                        <div className='cursor-pointer hover:text-black hover:font-medium flex gap-4 items-center' >
+                            <PencilLine size={20} strokeWidth={1}/>
+                            <div className="">Writings</div>
+                        </div>
+                        <div onClick={() => navigate("/likedblogs")} className='cursor-pointer hover:text-black hover:font-medium flex gap-4 items-center' >
+                            <BookHeart size={20} strokeWidth={1}/>
+                            <div className="">Liked Blogs</div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
             </div>
             
         </nav>

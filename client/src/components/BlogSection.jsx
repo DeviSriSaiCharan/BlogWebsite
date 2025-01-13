@@ -31,7 +31,6 @@ export default function BlogSection(){
 
     useEffect(()=>{
         getBlogs();
-        console.log("Called")
     },[])
 
     return (

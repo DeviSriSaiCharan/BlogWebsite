@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllBlogs, postBlog, getBlog, deleteBlog, createLike, deleteLike } from "../controllers/blog.controller.js";
+import { getAllBlogs, postBlog, getBlog, deleteBlog, createLike, deleteLike, getLikedBlogs } from "../controllers/blog.controller.js";
 import cookieParser from 'cookie-parser';
 
 const blogRoute = Router();
@@ -17,5 +17,7 @@ blogRoute.delete('/', deleteBlog);
 blogRoute.post('/like', createLike);
 
 blogRoute.delete('/like', deleteLike);
+
+blogRoute.get('/likedblogs', getLikedBlogs)
 
 export default blogRoute;

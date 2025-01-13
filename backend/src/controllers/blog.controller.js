@@ -150,3 +150,37 @@ export async function deleteLike(req, res){
         res.json({msg : "Something wen wrong", success : false});
     }
 }
+
+export async function getLikedBlogs(req, res){
+    const userId  = req.user;
+
+    try{
+        const response = await prisma.like.findMany({
+            where : {
+                UserId : userId
+            },
+            include : {
+                blog : {
+                    select : {
+                        id : true,
+                        title : true,
+                        content : true,
+                        imageURL : true,
+                        createdAt : true,
+                        author : {
+                            select : {
+                                id : true,
+                                username : true,
+                            }
+                        }
+                    },
+                },
+            }
+        });
+
+        if(response) res.json({blogs : response});
+    }
+    catch(e){
+        console.log("Likedblogs Error userId: ", userId + ", Error: ",e);
+    }
+}

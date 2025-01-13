@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import {authRoute, blogRoute}from './Routes/exports.js';
+import {authRoute, blogRoute, userRouter}from './Routes/exports.js';
 import cors from 'cors';
 import authenticateToken from './middlewares/authenticateToken.js';
 
@@ -19,5 +19,7 @@ app.use('/api/v1/auth', authRoute);
 app.use(authenticateToken);
 
 app.use('/api/v1/blog', blogRoute);
+
+app.use('/api/v1/user', userRouter);
 
 app.listen(PORT,() => console.log("Listening at port: " + PORT));
